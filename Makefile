@@ -25,7 +25,7 @@ SCHEMA_BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 SCHEMA_BUILD_VERSION = your app version - framework specyfic
 SCHEMA_CMD = the command your run this container with
 
-all: push
+all: login push
 
 image:
 	docker build \
@@ -40,6 +40,9 @@ image:
 		--build-arg SCHEMA_CMD="$(SCHEMA_CMD)" \
 		-t "$(PREFIX)/$(REPO_NAME)" .
 	docker tag "$(PREFIX)/$(REPO_NAME):latest" "$(PREFIX)/$(REPO_NAME):$(TAG)"
+
+login:
+	docker login -u "$(DOCKER_USER)" -p "$(DOCKER_PASS)"
 	
 push: image
 	docker push "$(PREFIX)/$(REPO_NAME):latest"
